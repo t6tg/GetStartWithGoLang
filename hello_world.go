@@ -3,46 +3,31 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
+	"os"
 )
-
-// type person struct {
-// 	Name string
-// 	age  int
-// }
-
-// func (p person) mutatePerson(name string) {
-// 	p.Name = name
-// 	fmt.Println("inside mutate:", p)
-// }
-
-var (
-	errAgeTooLow  = errors.New("age too low")
-	errAgeTooHigh = errors.New("age too high")
-)
-
-func validateAge(age int) error {
-	if age < 18 {
-		return errAgeTooLow
-	} else if age > 60 {
-		return errAgeTooHigh
-	}
-	return nil
-}
 
 func main() {
-	err := validateAge(61)
-	if err == errAgeTooLow {
-		fmt.Println("Cannot Enter")
-		return
-	}
-	if err == errAgeTooHigh {
-		fmt.Printf(":D")
-		return
-	}
+	f, err := os.Create("file.txt")
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
+	defer f.Close() // end of program
+	f.WriteString("Hello World")
+	// err := validateAge(61)
+	// if err == errAgeTooLow {
+	// 	fmt.Println("Cannot Enter")
+	// 	return
+	// }
+	// if err == errAgeTooHigh {
+	// 	fmt.Printf(":D")
+	// 	return
+	// }
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
 	// p1 := person{Name: "James"}
 	// fmt.Println(p1)
 	// p1.mutatePerson("Hacker")
@@ -73,6 +58,31 @@ func main() {
 	// fmt.Println(a)
 
 }
+
+type person struct {
+	Name string
+	age  int
+}
+
+func (p person) mutatePerson(name string) {
+	p.Name = name
+	fmt.Println("inside mutate:", p)
+}
+
+var (
+	errAgeTooLow  = errors.New("age too low")
+	errAgeTooHigh = errors.New("age too high")
+)
+
+func validateAge(age int) error {
+	if age < 18 {
+		return errAgeTooLow
+	} else if age > 60 {
+		return errAgeTooHigh
+	}
+	return nil
+}
+
 func add(x, y int) int {
 	p := 1
 	return x + y + p
