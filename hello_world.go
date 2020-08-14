@@ -1,33 +1,16 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
 	// Variable
-	var gopher string
-	gopher = "Gopher"
-	fmt.Printf("Hello, %s\n", gopher)
+	a := make(map[string]string)
+	a["Hello"] = "Gopher"
+	a["Name"] = "James"
+	a["X"] = "Hello from the other side."
 
-	name := "Thanawat Gulati"
-	fmt.Printf("My name is %s\n", name)
-	// Decision
-	var fruit string
-	fmt.Print("Enter Fruit : ")
-	fmt.Scan(&fruit)
-	if len(fruit) > 0 {
-		fmt.Printf("Fruit = %s ", fruit)
-	}
-	switch fruit {
-	case "apple":
-		fmt.Println("🍎")
-	case "banana":
-		fmt.Println("🍌")
-	case "mango":
-		fmt.Println("🥭")
-	default:
-		fmt.Println("💩")
+	if x, ok := a["X"]; ok {
+		fmt.Println(x)
 	}
 
 }
