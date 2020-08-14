@@ -1,5 +1,10 @@
 package main
 
+import (
+	"errors"
+	"fmt"
+)
+
 // type person struct {
 // 	Name string
 // 	age  int
@@ -10,7 +15,34 @@ package main
 // 	fmt.Println("inside mutate:", p)
 // }
 
+var (
+	errAgeTooLow  = errors.New("age too low")
+	errAgeTooHigh = errors.New("age too high")
+)
+
+func validateAge(age int) error {
+	if age < 18 {
+		return errAgeTooLow
+	} else if age > 60 {
+		return errAgeTooHigh
+	}
+	return nil
+}
+
 func main() {
+	err := validateAge(61)
+	if err == errAgeTooLow {
+		fmt.Println("Cannot Enter")
+		return
+	}
+	if err == errAgeTooHigh {
+		fmt.Printf(":D")
+		return
+	}
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// p1 := person{Name: "James"}
 	// fmt.Println(p1)
 	// p1.mutatePerson("Hacker")
