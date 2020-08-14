@@ -1,15 +1,33 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	var i int
-	var p *int
-	i = 10
-	fmt.Printf("i = %d\n", i)
-	fmt.Printf("Address i = %v\n", &i)
-	p = &i
-	fmt.Printf("Address i in P = %v\n", p)
-	fmt.Printf("Address of P = %v\n", &p)
-	fmt.Printf("value of P = %v\n", *p)
+	// Variable
+	var gopher string
+	gopher = "Gopher"
+	fmt.Printf("Hello, %s\n", gopher)
+
+	name := "Thanawat Gulati"
+	fmt.Printf("My name is %s\n", name)
+	// Decision
+	var fruit string
+	fmt.Print("Enter Fruit : ")
+	fmt.Scan(&fruit)
+	if len(fruit) > 0 {
+		fmt.Printf("Fruit = %s ", fruit)
+	}
+	switch fruit {
+	case "apple":
+		fmt.Println("🍎")
+	case "banana":
+		fmt.Println("🍌")
+	case "mango":
+		fmt.Println("🥭")
+	default:
+		fmt.Println("💩")
+	}
+
 }
