@@ -1,32 +1,57 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 )
 
 func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", indexHandler)
-	mux.HandleFunc("/about", aboutHandler)
-
-	err := http.ListenAndServe(":5050", mux)
+	h := chain(m1, m2, m3)(http.HandlerFunc(indexHandler))
+	err := http.ListenAndServe(":5050", h)
 	log.Println(err)
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		w.WriteHeader(http.StatusNotFound)
-		http.NotFound(w, r)
-		return
+type middleware func(http.Handler) http.Handler
+
+func chain(hs ...middleware) middleware {
+	return func(h http.Handler) http.Handler {
+		for i := len(hs); i > 0; i-- {
+			h = hs[i-1](h)
+		}
+		return h
 	}
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Index Page"))
 }
 
-func aboutHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("About Page"))
+func logger(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("request: %s %s\n", r.RequestURI, r.URL.Query)
+		h.ServeHTTP(w, r)
+	})
 }
-func notFoundHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("404 Page Not Found"))
+
+func m1(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("m1")
+		h.ServeHTTP(w, r)
+	})
+}
+
+func m2(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("m2")
+		h.ServeHTTP(w, r)
+	})
+}
+
+func m3(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("m3")
+		h.ServeHTTP(w, r)
+	})
+}
+
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Index Page"))
 }
