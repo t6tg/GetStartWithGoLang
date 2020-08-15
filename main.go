@@ -1,29 +1,26 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 )
 
 func main() {
-	err := http.ListenAndServe(":5050", http.HandlerFunc(mux))
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", indexHandler)
+	mux.HandleFunc("/about", aboutHandler)
+
+	err := http.ListenAndServe(":5050", mux)
 	log.Println(err)
 }
 
-func mux(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.URL.Path)
-	switch r.URL.Path {
-	case "/":
-		indexHandler(w, r)
-	case "/about":
-		aboutHandler(w, r)
-	default:
-		http.NotFound(w, r)
-	}
-}
-
 func indexHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		w.WriteHeader(http.StatusNotFound)
+		http.NotFound(w, r)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Index Page"))
 }
 
