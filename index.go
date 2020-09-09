@@ -5,8 +5,10 @@ import "fmt"
 func main() {
 	// Variable in Golang
 	fmt.Println("Hello World.")
-	var name string = "James"
+	var str string = "James"
 	var boolean bool = true
 	var Integer int = 1
-	fmt.Printf("String: %s ,Boolean: %t ,Integet: %d\n", name, boolean, Integer)
+	// implecit declration
+	value := "James" // <- No Type
+	fmt.Printf("String: %s ,Boolean: %t ,Integet: %d , Implecit var: %v \n", str, boolean, Integer, value)
 }
