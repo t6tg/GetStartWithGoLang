@@ -12,7 +12,7 @@ func main() {
 	var boolean bool = true
 	var Integer int = 1
 	// implecit declration
-	value := "James" // <- No Type
+	value := "James" // <- Dynamic Type
 	run()
 	fmt.Printf("String: %s ,Boolean: %t ,Integet: %d ,Implecit var: %v ,Global: %d \n", str, boolean, Integer, value, count)
 }
